@@ -50,6 +50,9 @@ module.exports = {
 
 	// Expose a function to handle a video not yet inserted in the DOM.
 	observeVideo:          videoElementsHandler.observeVideo,
+	
+	// Select audio output (earpiece or speaker).
+	selectAudioOutput:     selectAudioOutput,
 
 	// Expose a function to pollute window and naigator namespaces.
 	registerGlobals:       registerGlobals,
@@ -81,6 +84,20 @@ function refreshVideos() {
 	}
 }
 
+function selectAudioOutput(output) {
+	debug('selectAudioOutput() | [output:"%s"]', output);
+
+	switch (output) {
+		case 'earpiece':
+			exec(null, null, 'iosrtcPlugin', 'selectAudioOutputEarpiece', []);
+			break;
+		case 'speaker':
+			exec(null, null, 'iosrtcPlugin', 'selectAudioOutputSpeaker', []);
+			break;
+		default:
+			throw new Error('output must be "earpiece" or "speaker"');
+	}
+}
 
 function registerGlobals() {
 	debug('registerGlobals()');
